@@ -129,7 +129,7 @@ Now we can test our application.
 
 ## Create the native Java application
 
-This part is based on this tutorial: https://blog.softwaremill.com/small-fast-docker-images-using-graalvms-native-image-99c0bc92e70b.
+This part is based on this tutorial: https://blog.softwaremill.com/small-fast-docker-images-using-graalvms-native-image-99c0bc92e70b and information in the officiall GraalVM https://www.graalvm.org/docs/getting-started/container-images/, https://www.graalvm.org/reference-manual/native-image/StaticImages/ and https://www.graalvm.org/reference-manual/native-image/.
 
 Now we want to create a native runnable application. For that, we will use the `native-image` utility. We could install everyting locally and create the image on our own machines. There are some small issues with this, however. First, we will have to install not only the GraalVM but also some additional features, like the `native-image` tool and some other 3rd party libraries like `musl` and `zlib` to be able to statically link every library into our application. Also, we must be running on a Linux system (https://www.graalvm.org/reference-manual/native-image/StaticImages/).
 
