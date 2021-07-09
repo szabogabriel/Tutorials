@@ -4,7 +4,7 @@ This small project serves two purposes:
 * a small PoC project for my jSCGI library
 * to try out Docker with native Java app
 
-The idea is to create a small form handler. The frontend is hosted via Nginx which connects to a SCGI server. For the SCGI server I will be using my jSCGI implementation of it (https://github.com/szabogabriel/jSCGI) as a basis and the additional logic will reside in a new project. After testing out the library, a native version of the Java application will be created and run in a separate Docker image.
+The idea is to create a small HTTP POST form handler. The frontend is hosted via Nginx which connects to a SCGI server. For the SCGI server I will be using my jSCGI implementation of it (https://github.com/szabogabriel/jSCGI) as a basis and the additional logic will reside in a new project. After testing out the library, a native version of the Java application will be created and run in a separate Docker image.
 
 We will end up with 4 Docker images. Nginx, Java runtime via JVM, Java runtime with native, Graalvm compiler.
 
@@ -23,41 +23,40 @@ The Java applicaiton in its simplest form could be a simple Main class which wou
     package scgi.form;
     
     import java.io.IOException;
-    
     import jscgi.server.SCGIServer;
     
     public class Main {
     
-	    private static final String RESPONSE_HEADER = "HTTP/1.1 200 OK\n";
-    	private static final String CONTENT_TYPE = "Content-Type: %s\n";
-    	private static final String CONTENT_LENGTH = "Content-Length: %d\n";
-    	private static final String FINISH_HEADER = "\n";
+        private static final String RESPONSE_HEADER = "HTTP/1.1 200 OK\n";
+        private static final String CONTENT_TYPE = "Content-Type: %s\n";
+        private static final String CONTENT_LENGTH = "Content-Length: %d\n";
+        private static final String FINISH_HEADER = "\n";
     
-	    public static void main(String[] args) {
-		    try {
-			    new SCGIServer(9000, (req, res, mode) -> {
-				    try {
-					    String message = "Hello, %s!";
+        public static void main(String[] args) {
+            try {
+                new SCGIServer(9000, (req, res, mode) -> {
+                    try {
+                        String message = "Hello, %s!";
     
-		    			if (req.isBodyAvailable()) {
-				    		message = String.format(message, new String(req.getBody()));
-					    } else {
-					    	message = String.format(message, "World");
-					    }
+                        if (req.isBodyAvailable()) {
+                            message = String.format(message, new String(req.getBody()));
+                        } else {
+                            message = String.format(message, "World");
+                        }
     					
-		    			res.write(RESPONSE_HEADER.getBytes());
-				    	res.write(String.format(CONTENT_TYPE, "text/plain").getBytes());
-    					res.write(String.format(CONTENT_LENGTH, message.getBytes().length + "").getBytes());
-		    			res.write(FINISH_HEADER.getBytes());
-				    	res.write(message.getBytes());
-    				} catch (IOException e) {
-		    			e.printStackTrace();
-				    }
-    			});
-		    } catch (IOException e1) {
-    			e1.printStackTrace();
-		    }
-	    }
+                        res.write(RESPONSE_HEADER.getBytes());
+                        res.write(String.format(CONTENT_TYPE, "text/plain").getBytes());
+                        res.write(String.format(CONTENT_LENGTH, message.getBytes().length + "").getBytes());
+                        res.write(FINISH_HEADER.getBytes());
+                        res.write(message.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
 After creating an `app.jar` from this file which includes the jSCGI library as well, we can create a new Docker container by using Oracle's Java image which will serve this app.
