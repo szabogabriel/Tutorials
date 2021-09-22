@@ -46,7 +46,7 @@ The Java applicaiton in its simplest form could be a simple Main class which wou
     					
                         res.write(RESPONSE_HEADER.getBytes());
                         res.write(String.format(CONTENT_TYPE, "text/plain").getBytes());
-                        res.write(String.format(CONTENT_LENGTH, message.getBytes().length + "").getBytes());
+                        res.write(String.format(CONTENT_LENGTH, message.getBytes().length).getBytes());
                         res.write(FINISH_HEADER.getBytes());
                         res.write(message.getBytes());
                     } catch (IOException e) {
