@@ -12,7 +12,7 @@ First we need an Apache Docker image. E.g.
 
 The reason we pull this first is to acquire a valid httpd.conf file. Like it is writte in the official Apache Docker image page (https://hub.docker.com/_/httpd):
 
-`> docker run --rm httpd:2.4 cat /usr/local/apache2/conf/httpd.conf > my-httpd.conf`
+`> docker run --rm httpd:latest cat /usr/local/apache2/conf/httpd.conf > my-httpd.conf`
 
 Now we can start activating modules and adding our custom config.
 
