@@ -36,14 +36,16 @@ I added the following config:
 </VirtualHost>
 ```
 
-The `server-host` is a value I am providing via the runtime parameters (as described in my other tutorial). The webserver we try reverse proxy to is running on port 7000 with no specific host set (e.g. 0.0.0.0). It is important not to run on *localhnost* for example, otherwise our dockerized app won't be able to connect to it.
+The `server-host` is a value I am providing via the runtime parameters (as described in my other tutorial). The webserver we try reverse proxy to is running on port 7000 with no specific host set (e.g. 0.0.0.0). It is important not to run on *localhost* for example, otherwise our dockerized app won't be able to connect to it.
 
 Rewrite rules
 -------------
 
-I experimented with `mod_sed` and tried getting it up and running, but couldn't succeed. Then I found a great page (https://capttofu.tripod.com/wordpress_bak/) where there was they described the way how to define external filters. So what that was exactly what I did. But first, I had to activate the module.
+I experimented with `mod_sed` and tried getting it up and running, but didn't succeed. Then I found a great page (https://capttofu.tripod.com/wordpress_bak/) where they described the way how to define external filters. So what that was exactly what I did. But first, I had to activate the module.
 
 `LoadModule ext_filter_module modules/mod_ext_filter.so`
+
+And then add the configuration.
 
 ```
 ExtFilterDefine external_sed_out mode=output cmd="/bin/sed s/Hello/Bye/g"
@@ -58,7 +60,7 @@ ExtFilterDefine external_sed_in mode=input cmd="/bin/sed s/sdf/\"xxx\"/g"
 Building and running the custom image
 -------------------------------------
 
-From this point the configuration of Apache HTTP server was ready. We just have to put it together. I tried mounting the custom config file as a volume, but it didn't wanted to work out. So I created a simple Dockerfile.
+From this point the configuration of Apache HTTP server was ready. We just have to put it together. I tried mounting the custom config file as a volume, but it didn't wanted to work. So I created a simple Dockerfile.
 
 ```dockerfile
 FROM httpd:latest
@@ -82,7 +84,7 @@ First we need a very sofisticated test data to be sent to the test server. For t
 
 `echo "asdfasdfasdfasdfasdf" > req.dat`
 
-And we also need a HTTP server to send the data to and receive it from. So I wrote a simple test server using Java's built in webserver which logs the received body (if any) and answers with a 'Hello, world'.
+And we also need an HTTP server to send the data to and receive the response from. So I wrote a simple test server using Java's built in webserver which logs the received body (if any) and answers with a 'Hello, world'.
 
 ``` java
 package com.ibm.sk.ustidnrvergabe.test;
