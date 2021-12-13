@@ -14,7 +14,7 @@ The reason we pull this first is to acquire a valid httpd.conf file. Like it is 
 
 `> docker run --rm httpd:latest cat /usr/local/apache2/conf/httpd.conf > my-httpd.conf`
 
-Now we can start activating modules and adding our custom config.
+Now we can start activating modules and adding our custom config. All the configuration changes are done on this `my-httpd.conf` file.
 
 Reverse proxy
 -------------
