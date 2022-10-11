@@ -20,4 +20,4 @@ The following examples are meant to copy-paste as template for `javax.persistenc
 
     cq.select(root).where(predicates).orderBy(orders);
     return entityManager.createQuery(cq).getResultList();
-    ```
+```
