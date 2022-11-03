@@ -20,3 +20,13 @@ FROM postgres:11-alpine
 
 COPY --from=dumper /data $PGDATA
 ```
+## Simple dockerfile
+
+Example taken from [here](https://dev.to/andre347/how-to-easily-create-a-postgres-database-in-docker-4moj)
+
+```Dockerfile
+FROM postgres
+ENV POSTGRES_PASSWORD docker
+ENV POSTGRES_DB world
+COPY world.sql /docker-entrypoint-initdb.d/
+```
