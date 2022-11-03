@@ -30,3 +30,23 @@ ENV POSTGRES_PASSWORD docker
 ENV POSTGRES_DB world
 COPY world.sql /docker-entrypoint-initdb.d/
 ```
+
+## Docker compose
+
+```Yaml
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres:10
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: db-password
+      POSTGRES_USER: db-user
+      POSTGRES_DB: db-name
+    volumes:
+      - /home/user/postgres-volume
+    ports:
+      - "6432:5432"
+```
