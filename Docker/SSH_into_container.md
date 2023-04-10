@@ -31,6 +31,14 @@ podman  build -t alpine-sshd .
 
 ## Run image
 
+Since we are using Podman in rootless mode, we are binding the port 2002.
+
 ```
-podman  build -t alpine-sshd . 
+podman run --rm --name sshd_app -d -p 2002:22 alpine-sshd:latest 
+```
+
+## SSH into container
+
+```
+ssh -p 2002 myUser@localhost
 ```
